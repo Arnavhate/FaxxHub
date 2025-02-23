@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Video</h1>
+        <h1>FaxxHub</h1>
         <nav>
             <input type="text" id="search-bar" placeholder="Search videos..." oninput="searchVideos()">
             <button id="signin-btn" style="display: none;">Sign In</button>
@@ -39,6 +39,7 @@
             <input type="text" id="username" placeholder="Username" required>
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Sign In</button>
+            <p id="signup-error" style="color: red; display: none;">Error: Username already exists!</p>
             <p>Don't have an account? <a href="#signup" id="signup-link">Sign Up</a></p>
         </form>
     </section>
@@ -51,6 +52,15 @@
         document.getElementById('signin-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            if (users.includes(username)) {
+                document.getElementById('signup-error').style.display = 'block';
+                return;
+            }
+            
+            users.push(username);
+            localStorage.setItem('users', JSON.stringify(users));
             localStorage.setItem('signedIn', username);
             document.getElementById('signin-section').style.display = 'none';
         });
