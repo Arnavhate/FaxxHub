@@ -13,8 +13,8 @@
         <h1>Video Hub</h1>
         <nav>
             <input type="text" id="search-bar" placeholder="Search videos...">
-            <button id="signin-btn" style="display: none;">Sign In</button>
-            <button id="show-upload-btn">+</button>
+            <button id="signin-btn">Sign In</button>
+            <button id="show-upload-btn" style="display: none;">+</button>
         </nav>
     </header>
     
@@ -72,6 +72,10 @@
             document.getElementById('show-upload-btn').style.display = 'inline-block';
         });
 
+        document.getElementById('show-upload-btn').addEventListener('click', function() {
+            document.getElementById('upload-section').style.display = 'block';
+        });
+
         window.onload = async function() {
             const signedInUser = localStorage.getItem('signedIn');
             if (signedInUser) {
@@ -97,6 +101,7 @@
             const reader = new FileReader();
             reader.onload = async function(event) {
                 await videoRef.doc(title).set({ title, src: event.target.result });
+                document.getElementById('upload-section').style.display = 'none';
                 loadVideos();
             };
             reader.readAsDataURL(file);
